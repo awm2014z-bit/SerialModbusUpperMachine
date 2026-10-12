@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="../VirtualDevice/VirtualDevice.csproj" Id="eb858885-befe-4239-8efa-bbca2bc520b4">
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="WindowsFormsApp1.csproj" Id="69100a30-13b6-4ffe-a2c0-53caa63ab90f">
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+</Solution>
