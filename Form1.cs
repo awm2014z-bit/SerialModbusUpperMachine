@@ -631,6 +631,7 @@ namespace WindowsFormsApp1
                         dgvHistory.Columns.Clear();
                         dgvHistory.AutoGenerateColumns = true;
                         dgvHistory.DataSource = dt;
+                        dgvHistory.AllowUserToAddRows = false;
                         dgvHistory.AutoResizeColumns();
 
                         MessageBox.Show($"共 {dt.Rows.Count} 条记录");
@@ -748,8 +749,13 @@ namespace WindowsFormsApp1
             area.AxisY2.Interval = 0.3;
             area.AxisY2.Enabled = AxisEnabled.True;
             area.AxisY2.MajorGrid.Enabled = false;
+            // ★ 锁定图表布局：最大化（宽>高）时防止 X 轴刻度被挤出
+            area.Position = new ElementPosition(2, 3, 96, 92);
+            area.InnerPlotPosition = new ElementPosition(10, 3, 82, 80);
 
-            chartMain.ChartAreas.Add(area);
+            chartMain.ChartAreas.Add(area);   // ← 原有行，不动
+
+          
 
             // ---- 温度曲线（主轴）----
             Series seriesTemp = new Series("温度");
@@ -766,11 +772,33 @@ namespace WindowsFormsApp1
             seriesPress.Color = Color.Blue;
             seriesPress.YAxisType = AxisType.Secondary;
             chartMain.Series.Add(seriesPress);
+            this.Resize += (s, ev) => ApplyAdaptiveLayout();
+            ApplyAdaptiveLayout();
+
+
         }
 
         // =====================================================================
         //  十二、清空按钮（修复"假清空"）
         // =====================================================================
+        // ═══ 自适应分割：最大化时把上下分割线下移到 60% 处 ═══
+        private void ApplyAdaptiveLayout()
+        {
+            int bottomEdge = ClientSize.Height - statusStrip1.Height - 6;  // 下块底边（状态栏上方）
+            int splitY = Math.Max(446, (int)(bottomEdge * 0.60));          // 分割线：默认446，最大化移到60%
+
+            // 上块三个框拉伸到分割线
+            grpChart.Height = splitY - 14 - grpChart.Top;   // 图表：曲线区真正变大
+            grpDevice.Height = splitY - 6 - grpDevice.Top;   // 设备状态框（内部下方留白）
+            grpReg.Height = splitY - 6 - grpReg.Top;      // 寄存器框（内部下方留白）
+
+            // 下块从分割线开始，到状态栏结束
+            grpAlarm.Top = splitY - 8;
+            grpAlarm.Height = bottomEdge - grpAlarm.Top;
+            grpData.Top = splitY;
+            grpData.Height = bottomEdge - grpData.Top;
+        }
+
         private void btnClear_Click(object sender, EventArgs e)
         {
             ClearData();
@@ -856,6 +884,36 @@ namespace WindowsFormsApp1
 
         private void dgvHistory_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+        }
+
+        private void grpDevice_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void t_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void txtDeviceId_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
