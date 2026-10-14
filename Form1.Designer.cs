@@ -114,7 +114,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "设备编号";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txtDeviceId
             // 
@@ -122,7 +121,6 @@
             this.txtDeviceId.Name = "txtDeviceId";
             this.txtDeviceId.Size = new System.Drawing.Size(120, 21);
             this.txtDeviceId.TabIndex = 1;
-            this.txtDeviceId.TextChanged += new System.EventHandler(this.txtDeviceId_TextChanged);
             // 
             // btnConnect
             // 
@@ -241,7 +239,6 @@
             this.lblTime.TabIndex = 14;
             this.lblTime.Text = "当前时间";
             this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTime.Click += new System.EventHandler(this.label6_Click);
             // 
             // txtTime
             // 
@@ -258,7 +255,6 @@
             this.labCount.TabIndex = 16;
             this.labCount.Text = "读取次数";
             this.labCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labCount.Click += new System.EventHandler(this.label6_Click_1);
             // 
             // txtCount
             // 
@@ -275,7 +271,6 @@
             this.labalarmCount.TabIndex = 18;
             this.labalarmCount.Text = "报警次数";
             this.labalarmCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labalarmCount.Click += new System.EventHandler(this.labalarmCount_Click);
             // 
             // txtalarmCount
             // 
@@ -292,7 +287,6 @@
             this.t.TabIndex = 21;
             this.t.Text = "故障次数";
             this.t.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.t.Click += new System.EventHandler(this.t_Click);
             // 
             // txtFaultCount
             // 
@@ -300,7 +294,6 @@
             this.txtFaultCount.Name = "txtFaultCount";
             this.txtFaultCount.Size = new System.Drawing.Size(120, 21);
             this.txtFaultCount.TabIndex = 22;
-            this.txtFaultCount.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // btnFault
             // 
@@ -353,7 +346,6 @@
             this.dgvHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvHistory.Size = new System.Drawing.Size(768, 192);
             this.dgvHistory.TabIndex = 25;
-            this.dgvHistory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHistory_CellContentClick);
             // 
             // cmbMode
             // 
@@ -419,7 +411,6 @@
             this.cmbPortName.Name = "cmbPortName";
             this.cmbPortName.Size = new System.Drawing.Size(120, 20);
             this.cmbPortName.TabIndex = 29;
-            this.cmbPortName.SelectedIndexChanged += new System.EventHandler(this.cmbPortName_SelectedIndexChanged);
             // 
             // lblBaud
             // 
@@ -454,7 +445,6 @@
             this.txtSend.Name = "txtSend";
             this.txtSend.Size = new System.Drawing.Size(75, 21);
             this.txtSend.TabIndex = 33;
-            this.txtSend.TextChanged += new System.EventHandler(this.txtSend_TextChanged);
             // 
             // cmbCommMode
             // 
@@ -463,7 +453,6 @@
             this.cmbCommMode.Name = "cmbCommMode";
             this.cmbCommMode.Size = new System.Drawing.Size(120, 20);
             this.cmbCommMode.TabIndex = 34;
-            this.cmbCommMode.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // chartMain
             // 
@@ -570,7 +559,6 @@
             this.grpDevice.TabIndex = 42;
             this.grpDevice.TabStop = false;
             this.grpDevice.Text = "设备状态";
-            this.grpDevice.Enter += new System.EventHandler(this.grpDevice_Enter);
             // 
             // grpComm
             // 
@@ -666,7 +654,6 @@
             this.lblTitle.TabIndex = 49;
             this.lblTitle.Text = "实时数据监控";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTitle.Click += new System.EventHandler(this.label6_Click_2);
             // 
             // statusStrip1
             // 
@@ -677,7 +664,6 @@
             this.statusStrip1.Size = new System.Drawing.Size(1127, 22);
             this.statusStrip1.TabIndex = 50;
             this.statusStrip1.Text = "statusStrip1";
-            this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
             // 
             // toolStripStatusLabel1
             // 
@@ -694,7 +680,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1127, 21);
             this.panel1.TabIndex = 51;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // Form1
             // 
@@ -796,4 +781,3 @@
         private System.Windows.Forms.Panel panel1;
     }
 }
-
