@@ -77,7 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="DbPath.cs" />
     <Compile Include="DbRecord.cs" />
     <Compile Include="DeviceData.cs" />
