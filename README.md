@@ -4,7 +4,7 @@
 
 ## 界面预览
 
-![主界面](docs/screenshot.png)
+![主界面](docs/ui-preview.png)
 
 ## 核心功能
 
