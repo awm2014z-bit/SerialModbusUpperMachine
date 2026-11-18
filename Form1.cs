@@ -36,18 +36,18 @@ namespace WindowsFormsApp1
         private int readCount;
         private int alarmCount;
         private int faultCount;
-        private int sampleIndex = 0;            // 曲线横轴用的采样序号
-        private int discardedFrameCount = 0;    // 累计丢弃的非法帧
+        private int sampleIndex = 0;            
+        private int discardedFrameCount = 0;    
 
         private List<DeviceData> historyList = new List<DeviceData>();
         private EasyModbus.ModbusClient modbusClient = null;
 
-        private readonly object modbusLock = new object();       // EasyModbus 非线程安全
+        private readonly object modbusLock = new object();      
         private readonly object serialWriteLock = new object();
-        private readonly object rxLock = new object();           // 接收缓冲区
+        private readonly object rxLock = new object();          
 
         private readonly StringBuilder rxBuffer = new StringBuilder();
-        private int pollBusy = 0;                                // 采集重入哨兵，0 = 空闲
+        private int pollBusy = 0;                                
 
         // 模拟采集：没有下位机时用来跑通完整链路
         private volatile bool isSimulating = false;
@@ -69,11 +69,11 @@ namespace WindowsFormsApp1
             dgvHistory.AutoGenerateColumns = false;
             dgvHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // 先减后加：Designer.cs 里可能已绑定过，重复订阅会让一帧数据被处理两次
+            
             serialPort1.DataReceived -= SerialPort1_DataReceived;
             serialPort1.DataReceived += SerialPort1_DataReceived;
 
-            // 设计器会真的执行一遍构造函数，这里拦住建库/起线程，否则设计视图加载会卡或报错
+            
             if (IsInDesignMode()) return;
 
             InitDatabase();
@@ -96,7 +96,7 @@ namespace WindowsFormsApp1
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            // 没插设备时 SelectedItem 为 null，直接 ToString 会抛 NullReferenceException
+            // 没插设备时 
             if (cmbPortName.SelectedItem == null)
             {
                 MessageBox.Show("未检测到可用串口，请确认设备已插好并被驱动识别。");
@@ -122,9 +122,9 @@ namespace WindowsFormsApp1
                     client.Parity = System.IO.Ports.Parity.None;
                     client.StopBits = System.IO.Ports.StopBits.One;
                     client.UnitIdentifier = AppConfig.ModbusSlaveId;
-                    client.ConnectionTimeout = AppConfig.ModbusConnectTimeoutMs;   // 设备离线时别把线程卡死
+                    client.ConnectionTimeout = AppConfig.ModbusConnectTimeoutMs;  
 
-                    lock (modbusLock)   // 与采集线程互斥，避免半连接状态的实例被并发使用
+                    lock (modbusLock)   
                     {
                         client.Connect();
                         modbusClient = client;
@@ -152,7 +152,7 @@ namespace WindowsFormsApp1
                 continuousFailCount = 0;
                 lock (rxLock) { rxBuffer.Clear(); }
 
-                // 连上真机就退出模拟
+               
                 if (isSimulating)
                 {
                     isSimulating = false;
@@ -169,7 +169,7 @@ namespace WindowsFormsApp1
             }
             catch (Exception ex)
             {
-                // 失败必须回滚，否则残留一个 new 出来但没连上的 ModbusClient
+               
                 Logger.Error(ex, string.Format("连接 {0} 失败", portName));
                 DisconnectDevice();
                 MessageBox.Show("连接失败：" + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -211,12 +211,12 @@ namespace WindowsFormsApp1
             catch (Exception ex)
             {
                 Logger.Error(ex, "关闭通信链路异常");
-                errMsg = "关闭串口异常：" + ex.Message;   // 不弹窗打断用户，写状态栏
+                errMsg = "关闭串口异常：" + ex.Message;   
             }
             finally
             {
                 isPressureAlarm = false;
-                isFault = false;      // 不复位的话，下次连接一上来就是"设备故障"
+                isFault = false;      
                 continuousFailCount = 0;
 
                 if (isSimulating)
@@ -231,7 +231,7 @@ namespace WindowsFormsApp1
 
                 btnConnect.Enabled = true;
                 btnDisconnect.Enabled = false;
-                btnRead.Enabled = true;   // 该按钮同时是模拟开关，未连接时也要能点
+                btnRead.Enabled = true;   
 
                 ClearData();
                 txtStatus.Text = errMsg ?? "设备已断开";
@@ -249,12 +249,12 @@ namespace WindowsFormsApp1
             {
                 // 没连设备也能开模拟，不碰串口
                 isSimulating = true;
-                timerMonitor.Start();   // 未连接时定时器是停的，这里拉起来
+                timerMonitor.Start();   
             }
             else if (isSimulating)
             {
                 isSimulating = false;
-                // 没连设备时顺手收掉定时器，状态栏就不会被下一轮 Tick 覆盖
+               
                 if (!isConnected) timerMonitor.Stop();
             }
             else
@@ -450,7 +450,7 @@ namespace WindowsFormsApp1
             {
                 txtStatus.Text = "设备正常";
 
-                if (isPressureAlarm)    // 恢复也要留痕，便于追溯
+                if (isPressureAlarm)    
                 {
                     AddAlarmLog(string.Format("压力恢复正常 {0:F2} MPa", pressure));
                     Logger.Info(string.Format("压力恢复正常：{0:F2} MPa", pressure));
@@ -462,7 +462,7 @@ namespace WindowsFormsApp1
 
         private void btnFault_Click(object sender, EventArgs e)
         {
-            if (isFault) return;   // 已故障不重复计数
+            if (isFault) return;   
 
             isFault = true;
             faultCount++;
@@ -475,7 +475,7 @@ namespace WindowsFormsApp1
         private void btnRecover_Click(object sender, EventArgs e)
         {
             isFault = false;
-            CheckAlarm();   // 边沿触发保证不会重复计数
+            CheckAlarm();   
             AddAlarmLog("设备故障已恢复");
             Logger.Info("设备故障已恢复");
             UpdateUI();
@@ -500,7 +500,7 @@ namespace WindowsFormsApp1
                 historyList.RemoveAt(0);
 
             // 落库只入队，磁盘 IO 交给后台写线程批量做
-            EnqueueDbRecord(new DbRecord(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), temperature, pressure));
+            EnqueueDbRecord(new DbRecord(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), temperature, pressure,""));
 
             Series sTemp = chartMain.Series.FindByName("温度");
             Series sPress = chartMain.Series.FindByName("压力");
@@ -510,10 +510,10 @@ namespace WindowsFormsApp1
                 return;
             }
 
-            // X 轴用采样序号而非"当天秒数"，否则 24:00 归零会让曲线回折
+            
             sampleIndex++;
             sTemp.Points.AddXY(sampleIndex, temperature);
-            sPress.Points.AddXY(sampleIndex, pressure);   // 压力挂 AxisY2，无需 ×100
+            sPress.Points.AddXY(sampleIndex, pressure);   
 
             while (sTemp.Points.Count > AppConfig.MaxChartPoints) sTemp.Points.RemoveAt(0);
             while (sPress.Points.Count > AppConfig.MaxChartPoints) sPress.Points.RemoveAt(0);
@@ -535,14 +535,39 @@ namespace WindowsFormsApp1
                                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                                         RecordTime TEXT,
                                         Temperature REAL,
-                                        Pressure REAL
+                                        Pressure REAL,
+                                        VisionResult TEXT
                                      );
                                      CREATE INDEX IF NOT EXISTS IX_History_RecordTime ON History(RecordTime DESC);";
 
                 using (SQLiteConnection conn = DbPath.OpenConnection())
-                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                 {
-                    cmd.ExecuteNonQuery();
+                    using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    
+                    bool hasVisionResult = false;
+                    using (SQLiteCommand cmd = new SQLiteCommand("PRAGMA table_info(History);", conn))
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (string.Equals(reader["name"].ToString(), "VisionResult", StringComparison.OrdinalIgnoreCase))
+                            {
+                                hasVisionResult = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!hasVisionResult)
+                    {
+                        using (SQLiteCommand cmd = new SQLiteCommand("ALTER TABLE History ADD COLUMN VisionResult TEXT;", conn))
+                            cmd.ExecuteNonQuery();
+                        Logger.Info("已为旧数据库补充 VisionResult 列");
+                    }
                 }
 
                 Logger.Info("数据库初始化完成：" + DbPath.File);
@@ -560,7 +585,7 @@ namespace WindowsFormsApp1
             dbCts = new CancellationTokenSource();
             dbQueue = new BlockingCollection<DbRecord>(AppConfig.DbQueueCapacity);
 
-            // LongRunning：长驻线程，不占用线程池的工作线程
+            
             dbWriterTask = Task.Factory.StartNew(DbWriterLoop,
                                                  dbCts.Token,
                                                  TaskCreationOptions.LongRunning,
@@ -583,10 +608,11 @@ namespace WindowsFormsApp1
             }
             catch (InvalidOperationException)
             {
-                // 停机后再入队会走到这里，属正常收尾
+                
                 Logger.Debug("写库队列已关闭，丢弃一条采样");
             }
         }
+
 
         /// <summary>消费循环（消费者，后台线程）。停机时也要把队列排空。</summary>
         private void DbWriterLoop()
@@ -595,12 +621,12 @@ namespace WindowsFormsApp1
 
             try
             {
-                // BlockingCollection<T>.IsEmpty 是显式接口实现，类实例访问不到，只能判 Count
+                
                 while (!dbCts.IsCancellationRequested || dbQueue.Count > 0)
                 {
                     batch.Clear();
 
-                    // 运行中最多等 500ms 凑批；停机中不等待，取空即退
+                    
                     int wait = dbCts.IsCancellationRequested ? 0 : AppConfig.DbFlushIntervalMs;
 
                     DbRecord first;
@@ -634,18 +660,19 @@ namespace WindowsFormsApp1
                 using (SQLiteConnection conn = DbPath.OpenConnection())
                 using (SQLiteTransaction tran = conn.BeginTransaction())
                 {
-                    const string sql = "INSERT INTO History (RecordTime, Temperature, Pressure) VALUES (@time, @t, @p)";
+                    const string sql = "INSERT INTO History (RecordTime, Temperature, Pressure,VisionResult) VALUES (@time, @t, @p,@v)";
                     using (SQLiteCommand cmd = new SQLiteCommand(sql, conn, tran))
                     {
                         SQLiteParameter pTime = cmd.Parameters.Add("@time", DbType.String);
                         SQLiteParameter pTemp = cmd.Parameters.Add("@t", DbType.Double);
                         SQLiteParameter pPress = cmd.Parameters.Add("@p", DbType.Double);
-
+                        SQLiteParameter pVision = cmd.Parameters.Add("@v", DbType.String);
                         for (int i = 0; i < batch.Count; i++)
                         {
                             pTime.Value = batch[i].RecordTime;
                             pTemp.Value = batch[i].Temperature;
                             pPress.Value = batch[i].Pressure;
+                            pVision.Value = batch[i].VisionResult;
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -655,7 +682,7 @@ namespace WindowsFormsApp1
             }
             catch (Exception ex)
             {
-                // 写库失败意味着数据丢了，必须留痕并提示，不能空 catch 吞掉
+                
                 Logger.Error(ex, string.Format("批量写库失败，本批 {0} 条数据已丢弃", batch.Count));
 
                 SafeInvoke(() =>
@@ -700,32 +727,32 @@ namespace WindowsFormsApp1
 
         private void SerialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            // 本方法在后台线程执行，不要访问任何控件，只读 volatile 字段
+            
             if (isClosing) return;
             if (currentMode == AppConfig.ModeModbus) return;
 
             string newData;
             try
             {
-                if (!serialPort1.IsOpen) return;   // 串口可能正在关闭
+                if (!serialPort1.IsOpen) return;   
                 newData = serialPort1.ReadExisting();
             }
             catch (Exception ex)
             {
-                // 关闭瞬间的读取失败属正常现象，但仍要留痕
+            
                 Logger.Debug("串口读取被忽略（可能是关闭瞬间）：" + ex.Message);
                 return;
             }
 
             if (string.IsNullOrEmpty(newData)) return;
 
-            // StringBuilder + 锁：避免高频拼接产生大量临时字符串，也与清空操作互斥
+            
             List<string> lines = new List<string>(4);
             lock (rxLock)
             {
                 rxBuffer.Append(newData);
 
-                // 防下位机不发换行符导致缓冲区无限增长
+                
                 if (rxBuffer.Length > AppConfig.ReceiveBufferLimit)
                     rxBuffer.Remove(0, rxBuffer.Length - AppConfig.ReceiveBufferLimit / 2);
 
@@ -740,7 +767,7 @@ namespace WindowsFormsApp1
                 }
             }
 
-            // 解析放到锁外面，别占着接收缓冲区
+            
             for (int i = 0; i < lines.Count; i++)
                 ProcessLine(lines[i]);
         }
@@ -780,7 +807,7 @@ namespace WindowsFormsApp1
             }
 
             // TryParse + InvariantCulture：脏数据不抛异常，小数点不受系统区域影响
-            // （用 Convert.ToDouble 的话，德语/法语区域会把 23.5 读成 235）
+            
             double t;
             double p;
             if (!double.TryParse(parts[0].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out t)) return;
@@ -827,8 +854,8 @@ namespace WindowsFormsApp1
 
             try
             {
-                string cmd = txtSend.Text + "\n";   // 加换行，方便下位机用 ReadLine
-                lock (serialWriteLock)              // 与采集线程的发送互斥
+                string cmd = txtSend.Text + "\n";   
+                lock (serialWriteLock)              
                 {
                     serialPort1.Write(cmd);
                 }
@@ -871,7 +898,7 @@ namespace WindowsFormsApp1
 
             try
             {
-                lock (modbusLock)   // 与采集线程的 ReadHoldingRegisters 互斥，必须加
+                lock (modbusLock)   
                 {
                     if (modbusClient == null || !modbusClient.Connected)
                         throw new InvalidOperationException("Modbus 链路已断开");
@@ -905,7 +932,7 @@ namespace WindowsFormsApp1
                         DataTable dt = new DataTable();
                         adapter.Fill(dt);
 
-                        // 清掉 Designer 里预置的列，改用查询结果的列
+                       
                         dgvHistory.DataSource = null;
                         dgvHistory.Columns.Clear();
                         dgvHistory.AutoGenerateColumns = true;
@@ -934,12 +961,12 @@ namespace WindowsFormsApp1
                 if (saveDialog.ShowDialog() != DialogResult.OK)
                     return;
 
-                // UTF8 带 BOM，中文用 Excel 打开不会乱码
+             
                 using (StreamWriter sw = new StreamWriter(saveDialog.FileName, false, new UTF8Encoding(true)))
                 {
                     sw.WriteLine("采集时间,温度(℃),压力(MPa)");
 
-                    // 直接查库导出，不依赖内存列表
+                        
                     using (SQLiteConnection conn = DbPath.OpenConnection())
                     using (SQLiteCommand cmd = new SQLiteCommand(
                         "SELECT RecordTime, Temperature, Pressure FROM History ORDER BY Id DESC", conn))
@@ -972,7 +999,7 @@ namespace WindowsFormsApp1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // 串口列表：优先选中 COM1
+            
             cmbPortName.Items.Clear();
             foreach (string port in System.IO.Ports.SerialPort.GetPortNames())
                 cmbPortName.Items.Add(port);
@@ -1017,14 +1044,14 @@ namespace WindowsFormsApp1
             area.AxisY.Interval = 10;
             area.AxisY.MajorGrid.LineColor = Color.LightGray;
 
-            // 次轴：压力单独成轴，不再 ×100 与温度挤在一起
+            // 次轴：压力单独成轴
             area.AxisY2.Title = "压力 (MPa)";
             area.AxisY2.Minimum = 0;
             area.AxisY2.Maximum = 1.5;
             area.AxisY2.Interval = 0.3;
             area.AxisY2.Enabled = AxisEnabled.True;
             area.AxisY2.MajorGrid.Enabled = false;
-            // 固定绘图区比例，最大化时防止 X 轴刻度被挤掉
+            // 固定绘图区比例
             area.Position = new ElementPosition(2, 3, 96, 92);
             area.InnerPlotPosition = new ElementPosition(10, 3, 82, 80);
 
@@ -1090,8 +1117,7 @@ namespace WindowsFormsApp1
                 chartMain.ChartAreas[0].AxisX.Maximum = 10;
             }
 
-            // historyList 刻意保留：统计清零 ≠ 历史数据消失
-            // 状态栏按真实连接状态改写，不然串口还开着却显示"设备未连接"
+           
             txtStatus.Text = isConnected ? "数据已清空（设备仍在连接中）" : "设备未连接";
         }
 
@@ -1128,6 +1154,41 @@ namespace WindowsFormsApp1
                 // 关闭阶段只记日志，不弹窗阻塞用户退出
                 Logger.Error(ex, "程序关闭清理异常");
             }
+        }
+
+        private void btnVision_Click(object sender, EventArgs e)
+        {
+            
+            Task.Run(() =>
+            {
+                try
+                {
+                    //  模拟视觉检测（调用 VisionHelper 类）
+                    // 实际项目中调相机SDK拿图，再丢给Halcon
+                    string visionResult = VisionHelper.RunVisionProcess();
+                                                     
+                    DbRecord record = new DbRecord(
+                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        temperature,  
+                        pressure,     
+                        visionResult  // 视觉结果（"OK" 或 "NG"）
+                    );
+
+                    
+                    EnqueueDbRecord(record);
+
+                    
+                    SafeInvoke(() =>
+                    {
+                        
+                        txtStatus.Text = "视觉检测完成: " + visionResult;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "视觉处理异常");
+                }
+            });
         }
     }
 }

@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.label1 = new System.Windows.Forms.Label();
             this.txtDeviceId = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -85,6 +85,7 @@
             this.grpDevice = new System.Windows.Forms.GroupBox();
             this.grpComm = new System.Windows.Forms.GroupBox();
             this.grpAction = new System.Windows.Forms.GroupBox();
+            this.btnVision = new System.Windows.Forms.Button();
             this.grpReg = new System.Windows.Forms.GroupBox();
             this.grpChart = new System.Windows.Forms.GroupBox();
             this.grpAlarm = new System.Windows.Forms.GroupBox();
@@ -297,7 +298,7 @@
             // 
             // btnFault
             // 
-            this.btnFault.Location = new System.Drawing.Point(6, 53);
+            this.btnFault.Location = new System.Drawing.Point(8, 53);
             this.btnFault.Name = "btnFault";
             this.btnFault.Size = new System.Drawing.Size(75, 23);
             this.btnFault.TabIndex = 23;
@@ -318,20 +319,20 @@
             // dgvHistory
             // 
             this.dgvHistory.AllowUserToAddRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(248)))), ((int)(((byte)(251)))));
-            this.dgvHistory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(248)))), ((int)(((byte)(251)))));
+            this.dgvHistory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvHistory.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(78)))), ((int)(((byte)(121)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(78)))), ((int)(((byte)(121)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.cmbMode,
@@ -441,7 +442,7 @@
             // 
             // txtSend
             // 
-            this.txtSend.Location = new System.Drawing.Point(99, 113);
+            this.txtSend.Location = new System.Drawing.Point(8, 137);
             this.txtSend.Name = "txtSend";
             this.txtSend.Size = new System.Drawing.Size(75, 21);
             this.txtSend.TabIndex = 33;
@@ -456,30 +457,30 @@
             // 
             // chartMain
             // 
-            chartArea1.InnerPlotPosition.Auto = false;
-            chartArea1.InnerPlotPosition.Height = 100F;
-            chartArea1.InnerPlotPosition.Width = 100F;
-            chartArea1.Name = "ChartArea1";
-            chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 88F;
-            chartArea1.Position.Width = 94F;
-            chartArea1.Position.X = 3F;
-            chartArea1.Position.Y = 3F;
-            this.chartMain.ChartAreas.Add(chartArea1);
+            chartArea4.InnerPlotPosition.Auto = false;
+            chartArea4.InnerPlotPosition.Height = 100F;
+            chartArea4.InnerPlotPosition.Width = 100F;
+            chartArea4.Name = "ChartArea1";
+            chartArea4.Position.Auto = false;
+            chartArea4.Position.Height = 88F;
+            chartArea4.Position.Width = 94F;
+            chartArea4.Position.X = 3F;
+            chartArea4.Position.Y = 3F;
+            this.chartMain.ChartAreas.Add(chartArea4);
             this.chartMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chartMain.Legends.Add(legend1);
+            legend4.Name = "Legend1";
+            this.chartMain.Legends.Add(legend4);
             this.chartMain.Location = new System.Drawing.Point(3, 17);
             this.chartMain.Name = "chartMain";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chartMain.Series.Add(series1);
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chartMain.Series.Add(series4);
             this.chartMain.Size = new System.Drawing.Size(547, 509);
             this.chartMain.TabIndex = 35;
             this.chartMain.Text = "chart1";
-            title1.Name = "实时数据趋势";
-            this.chartMain.Titles.Add(title1);
+            title4.Name = "实时数据趋势";
+            this.chartMain.Titles.Add(title4);
             // 
             // lstAlarmLog
             // 
@@ -577,6 +578,7 @@
             // 
             // grpAction
             // 
+            this.grpAction.Controls.Add(this.btnVision);
             this.grpAction.Controls.Add(this.btnRead);
             this.grpAction.Controls.Add(this.btnSend);
             this.grpAction.Controls.Add(this.txtSend);
@@ -585,12 +587,22 @@
             this.grpAction.Controls.Add(this.btnRecover);
             this.grpAction.Controls.Add(this.btnShowHistory);
             this.grpAction.Controls.Add(this.btnExportCsv);
-            this.grpAction.Location = new System.Drawing.Point(296, 162);
+            this.grpAction.Location = new System.Drawing.Point(296, 157);
             this.grpAction.Name = "grpAction";
-            this.grpAction.Size = new System.Drawing.Size(229, 150);
+            this.grpAction.Size = new System.Drawing.Size(229, 163);
             this.grpAction.TabIndex = 44;
             this.grpAction.TabStop = false;
             this.grpAction.Text = "操作按钮";
+            // 
+            // btnVision
+            // 
+            this.btnVision.Location = new System.Drawing.Point(99, 111);
+            this.btnVision.Name = "btnVision";
+            this.btnVision.Size = new System.Drawing.Size(75, 23);
+            this.btnVision.TabIndex = 34;
+            this.btnVision.Text = "视觉检测";
+            this.btnVision.UseVisualStyleBackColor = true;
+            this.btnVision.Click += new System.EventHandler(this.btnVision_Click);
             // 
             // grpReg
             // 
@@ -600,7 +612,7 @@
             this.grpReg.Controls.Add(this.txtRegAddr);
             this.grpReg.Controls.Add(this.txtRegValue);
             this.grpReg.Controls.Add(this.cmbCommMode);
-            this.grpReg.Location = new System.Drawing.Point(296, 318);
+            this.grpReg.Location = new System.Drawing.Point(299, 326);
             this.grpReg.Name = "grpReg";
             this.grpReg.Size = new System.Drawing.Size(229, 114);
             this.grpReg.TabIndex = 45;
@@ -779,5 +791,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnVision;
     }
 }
