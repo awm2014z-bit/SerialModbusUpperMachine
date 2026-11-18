@@ -925,8 +925,8 @@ namespace WindowsFormsApp1
             {
                 using (SQLiteConnection conn = DbPath.OpenConnection())
                 {
-                    const string sql = "SELECT RecordTime AS 采集时间, Temperature AS 温度, Pressure AS 压力 " +
-                                       "FROM History ORDER BY Id DESC LIMIT 100";
+                    const string sql = "SELECT RecordTime AS 采集时间, Temperature AS 温度, Pressure AS 压力, " +
+                                       "VisionResult AS 视觉结果 FROM History ORDER BY Id DESC LIMIT 100";
                     using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(sql, conn))
                     {
                         DataTable dt = new DataTable();
@@ -964,12 +964,12 @@ namespace WindowsFormsApp1
              
                 using (StreamWriter sw = new StreamWriter(saveDialog.FileName, false, new UTF8Encoding(true)))
                 {
-                    sw.WriteLine("采集时间,温度(℃),压力(MPa)");
+                    sw.WriteLine("采集时间,温度(℃),压力(MPa),视觉结果");
 
                         
                     using (SQLiteConnection conn = DbPath.OpenConnection())
                     using (SQLiteCommand cmd = new SQLiteCommand(
-                        "SELECT RecordTime, Temperature, Pressure FROM History ORDER BY Id DESC", conn))
+                        "SELECT RecordTime, Temperature, Pressure, VisionResult FROM History ORDER BY Id DESC", conn))
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
                         int count = 0;
@@ -979,7 +979,12 @@ namespace WindowsFormsApp1
                             string temp = Convert.ToDouble(reader["Temperature"]).ToString("F1");
                             string press = Convert.ToDouble(reader["Pressure"]).ToString("F2");
 
-                            sw.WriteLine(string.Format("{0},{1},{2}", time, temp, press));
+                            // 视觉结果可能含逗号(如报错信息)，按 CSV 规则用引号包裹并转义内部引号
+                            string vision = reader["VisionResult"] == DBNull.Value
+                                ? "" : reader["VisionResult"].ToString();
+                            string visionCsv = "\"" + vision.Replace("\"", "\"\"") + "\"";
+
+                            sw.WriteLine(string.Format("{0},{1},{2},{3}", time, temp, press, visionCsv));
                             count++;
                         }
 
@@ -1128,6 +1133,7 @@ namespace WindowsFormsApp1
             txtTemperature.Clear();
             txtPressure.Clear();
             txtTime.Clear();
+            txtVision.Clear();
 
             txtalarmCount.Text = "0";
             txtCount.Text = "0";
@@ -1180,8 +1186,9 @@ namespace WindowsFormsApp1
                     
                     SafeInvoke(() =>
                     {
-                        
-                        txtStatus.Text = "视觉检测完成: " + visionResult;
+
+                        txtVision.Text = visionResult;
+
                     });
                 }
                 catch (Exception ex)
